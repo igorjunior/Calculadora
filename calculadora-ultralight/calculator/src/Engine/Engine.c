@@ -11,10 +11,12 @@ typedef enum
 {
   SUM,
   SUB,
+  MULT,
+  DIV,
+  INVERT,
   NON
 } operations;
 
-operations currentOperation = -1;
 double result = 0.0;
 
 ULApp app = 0;
@@ -119,49 +121,45 @@ char *ULStringToC(ULString string)
   return out;
 }
 
-JSValueRef NumberClick(JSContextRef ctx, JSObjectRef function,
-                       JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[],
-                       JSValueRef *exception)
+JSValueRef Operation(JSContextRef ctx, JSObjectRef function,
+                     JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[],
+                     JSValueRef *exception)
 {
   printf("Number Click: ");
-  if (argumentCount == 1)
+  if (argumentCount == 2)
   {
-    if (JSValueIsNumber(ctx, arguments[0]))
+    int operation = (int)JSValueToNumber(ctx, arguments[0], 0);
+    double number = JSValueToNumber(ctx, arguments[1], 0);
+    printf("%.2lf ", operation);
+    printf("%.2lf ", number);
+    if (operation != NON)
     {
-      double n = JSValueToNumber(ctx, arguments[0], 0);
-      printf("%.2lf ", n);
-      if (currentOperation == SUM)
+      if (operation == SUM)
       {
-        result += n;
-        printf("SUM: %.2lf", result);
+        result += number;
       }
-      else if (currentOperation == SUB)
+      else if (operation == SUB)
       {
-        result -= n;
-        printf("SUB: %.2lf", result);
+        result -= number;
       }
-      else if (currentOperation == -1)
+      else if (operation == MULT)
       {
-        result = n;
-        printf("RES: %.2lf", result);
+        result *= number;
       }
-      currentOperation = NON;
+      else if (operation == DIV)
+      {
+        result /= number;
+      }
+      else if (operation == INVERT)
+      {
+        result *= -1;
+      }
     }
+    printf("= %.2lf \n", result);
+    JSValueRef returnValue = JSValueMakeNumber(ctx, result);
+    return returnValue;
   }
-  printf("\n");
-}
 
-JSValueRef OperationClick(JSContextRef ctx, JSObjectRef function,
-                          JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[],
-                          JSValueRef *exception)
-{
-  printf("Operation click: ");
-  if (JSValueIsNumber(ctx, arguments[0]))
-  {
-    int n = (int)JSValueToNumber(ctx, arguments[0], 0);
-    currentOperation = n;
-    printf("%d ", currentOperation);
-  }
   printf("\n");
 }
 
@@ -169,12 +167,8 @@ void OnDOMReady(void *user_data, ULView caller, unsigned long long frame_id,
                 bool is_main_frame, ULString url)
 {
   JSContextRef ctx = ulViewLockJSContext(view);
-  JSStringRef name = JSStringCreateWithUTF8CString("NumberClick");
-  JSObjectRef func = JSObjectMakeFunctionWithCallback(ctx, name, NumberClick);
-  JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), name, func, 0, 0);
-  JSStringRelease(name);
-  name = JSStringCreateWithUTF8CString("OperationClick");
-  func = JSObjectMakeFunctionWithCallback(ctx, name, OperationClick);
+  JSStringRef name = JSStringCreateWithUTF8CString("Operation");
+  JSObjectRef func = JSObjectMakeFunctionWithCallback(ctx, name, Operation);
   JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), name, func, 0, 0);
   JSStringRelease(name);
   ulViewUnlockJSContext(view);

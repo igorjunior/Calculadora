@@ -2,136 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculadora</title>
-    <link rel="stylesheet" href="./tailwind.css">
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
   </head>
   <body>
     <div class="dark">
       <div
+        x-data="state()"
         class="min-h-screen bg-gray-50 dark:bg-black p-6 flex flex-col justify-center"
       >
         <div class="flex-grow flex flex-col">
-          <div class="h-24 w-full flex">
+          <div class="h-28 w-full flex text-blue-500">
             <span
-              class="text-5xl font-black text-card dark:text-primary flex-grow"
+              class="text-5xl font-black text-card dark:text-blue-500 flex-grow"
               >=</span
             >
-            <span class="text-5xl font-black text-primary dark:text-white"
-              >1279</span
-            >
+            <div class="space-x-4">
+              <span
+                id="textBox"
+                class="text-5xl font-black dark:text-white"
+              ></span>
+            </div>
           </div>
           <hr />
-          <div class="h-24 w-full flex justify-end">
-            1279*3
+          <div class="flex-grow"></div>
+          <div
+            class="grid grid-cols-4 w-full gap-2 text-black dark:text-white self-end"
+          >
+            <template x-for="(item, index) in items" :key="`item-{$index}`">
+              <button
+                x-on:click="buttonClick(item)"
+                x-text="item"
+                class="w-full transition duration-200 focus:bg-blue-600 focus:outline-none font-black h-28 text-white bg-blue-500 rounded-xl shadow flex items-center justify-center text-3xl"
+              ></button>
+            </template>
           </div>
         </div>
         <div
           class="grid grid-cols-4 w-full gap-2 text-black dark:text-white self-end"
-        >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >CE</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >+/-</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >%</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >/</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >1</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >2</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >3</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >X</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >4</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >5</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >6</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >-</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >7</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >8</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >9</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl shadow-lg flex items-center justify-center text-3xl"
-            >+</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >.</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 bg-white shadow-lg dark:bg-card rounded-xl flex items-center justify-center text-3xl"
-            >0</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl flex items-center justify-center text-3xl"
-            >DEL</button
-          >
-          <button
-            onClick="buttonClick(this)"
-            class="w-full font-black h-24 text-white bg-primary rounded-xl flex items-center justify-center text-3xl"
-            >=</button
-          >
-        </div>
+        ></div>
       </div>
     </div>
-    <script src="core.js"></script>
+
+    <script src="script.js"></script>
   </body>
 </html>

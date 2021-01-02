@@ -6,7 +6,7 @@ const items = [
   "1",
   "2",
   "3",
-  "X",
+  "*",
   "4",
   "5",
   "6",
@@ -20,106 +20,68 @@ const items = [
   "DEL",
   "=",
 ];
-
-const operations = {
-  "+": (itemA, itemB) => {
-    return itemA + itemB;
-  },
-  "-": (itemA, itemB) => {
-    return itemA - itemB;
-  },
-  "/": (itemA, itemB) => {
-    return itemA / itemB;
-  },
-  X: (itemA, itemB) => {
-    return itemA * itemB;
-  },
+var OPERATIONS = {
+  SUM : 0, 
+  SUB : 1, 
+  MULT: 2, 
+  DIV: 3,
+  INVERT: 4,
+  NON: 5
 };
+const textBox = document.getElementById('textBox');
+textBox.innerHTML = '0';
+let currentResult = false;
+let currentOperation = OPERATIONS.SUM;
+
 const buttonClick = (element) => {
-  const content = element.innerHTML;
-  if (isNaN(content)) {
-    if (operations.includes(content)) {
-      console.log(content);
+  if(currentResult){
+    textBox.innerHTML = 0;
+    currentResult = false;
+  }
+  if(isNaN(element)){
+    if(element === "."){
+      if(!textBox.innerHTML.includes('.')){
+        textBox.innerHTML = `${textBox.innerHTML}.`
+      }
+    }else if(element === "+"){
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.SUM;
+      currentResult = true;
+    }
+    else if(element === "-"){
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.SUB;
+      currentResult = true;
+    }
+    else if(element === "*"){
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.MULT;
+      currentResult = true;
+    }
+    else if(element === "/"){
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.DIV;
+      currentResult = true;
+    }else if(element === "+/-"){
+      textBox.innerHTML = Operation(OPERATIONS.INVERT, parseFloat(textBox.innerHTML));
+      currentResult = true;
+    }else if(element === "="){
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.NON;
+      currentResult = true;
+    }
+  }else{
+    if(parseFloat(textBox.innerHTML) === 0 && textBox.innerHTML.slice(-1) !== "."){
+      textBox.innerHTML = element;
+    }else{
+      textBox.innerHTML = `${textBox.innerHTML}${element}`;
     }
   }
 };
 
 const state = () => {
   return {
-    itemOne: "",
-    itemTwo: "",
-    operation: "",
-    reset: false,
-    checkValidity: () => {
-      if (this.itemOne && this.itemTwo && this.operation !== null) {
-        return true;
-      }
-      return false;
-    },
-    addNumber(content) {
-      if (this.reset) {
-        if (!isNaN(content) || content === ".") {
-          this.itemOne = Number(`${content}`);
-        } else {
-          if (!this.operation) {
-            if (Object.keys(operations).includes(content)) {
-              this.operation = content;
-            }
-          }
-        }
-        this.reset = false;
-        return 0;
-      }
-      if (!isNaN(content) || content === ".") {
-        if (content === ".") {
-          if (this.operation) {
-            if (!isNaN((this.itemTwo = Number(`${this.itemTwo}${content}`)))) {
-              this.itemTwo = `${this.itemTwo}${content}`;
-            }
-          } else {
-            if (!isNaN((this.itemOne = Number(`${this.itemOne}${content}`)))) {
-              this.itemOne = `${this.itemOne}${content}`;
-            }
-          }
-          return 0;
-        }
-        if (this.operation) {
-          this.itemTwo = Number(`${this.itemTwo}${content}`);
-        } else {
-          this.itemOne = Number(`${this.itemOne}${content}`);
-        }
-      } else {
-        if (!this.operation) {
-          if (Object.keys(operations).includes(content)) {
-            this.operation = content;
-          }
-        }
-      }
-      if (content === "=") {
-        this.itemOne = String(
-          operations[this.operation](this.itemOne, this.itemTwo)
-        );
-        this.operation = "";
-        this.itemTwo = "";
-        this.reset = true;
-      } else if (content === "CE") {
-        this.itemOne = "";
-        this.operation = "";
-        this.itemTwo = "";
-        this.reset = true;
-      } else if (content === "+/-") {
-        if (this.operation) {
-          this.itemOne = String(
-            -1 * operations[this.operation](this.itemOne, this.itemTwo)
-          );
-          this.operation = "";
-          this.itemTwo = "";
-        } else {
-          this.itemOne = String(-1 * this.itemOne);
-          this.operation = "";
-          this.itemTwo = "";
-        }
-      }
-    },
   };
 };
+
+
