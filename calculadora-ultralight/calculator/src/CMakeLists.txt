@@ -2,8 +2,9 @@ set(APP_NAME Calculator)
 include_directories("${ULTRALIGHT_INCLUDE_DIR}")
 link_directories("${ULTRALIGHT_LIBRARY_DIR}")
 link_libraries(UltralightCore AppCore Ultralight WebCore)
+set(SOURCES main.c main.h Engine/Engine.h Engine/Engine.c)
 
-add_executable(${APP_NAME} WIN32 MACOSX_BUNDLE "main.c")
+add_executable(${APP_NAME} WIN32 MACOSX_BUNDLE ${SOURCES})
 
 if (APPLE)
   # Enable High-DPI on macOS through our custom Info.plist template
