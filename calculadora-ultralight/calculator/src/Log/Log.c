@@ -26,7 +26,7 @@ Log *readLogs(int *size)
   Log input;
   int counter = 0;
   FILE *file;
-  file = fopen("calculator.log", "rw");
+  file = fopen("calculator.log", "r");
   if (file == NULL)
   {
     fprintf(stderr, "\nError opening file\n");
