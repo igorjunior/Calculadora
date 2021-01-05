@@ -45,6 +45,8 @@ namespace ultralight
     /// @param  height  The new height (in pixels).
     ///
     virtual void OnResize(uint32_t width, uint32_t height) = 0;
+
+    virtual void OnKeyBoard(int key, int action) = 0;
   };
 
   ///

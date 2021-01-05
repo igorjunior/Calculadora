@@ -2,11 +2,15 @@
 # Build script
 mkdir -p build_deps
 cd build_deps
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
 cmake ../Source/GetDeps -G "Ninja"
 ninja
 cd ..
 mkdir -p build
 cd build
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
 cmake .. -G "Ninja"
 ninja
 cd ..

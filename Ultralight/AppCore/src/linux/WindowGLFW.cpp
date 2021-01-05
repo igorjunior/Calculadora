@@ -21,6 +21,8 @@ extern "C"
     evt.modifiers = GLFWModsToUltralightMods(mods);
     win->FireKeyEvent(evt);
 
+    win->OnKeyBoard(evt.virtual_key_code, evt.type);
+
     if (evt.type == ultralight::KeyEvent::kType_RawKeyDown &&
         (key == GLFW_KEY_ENTER || key == GLFW_KEY_TAB))
     {
@@ -258,6 +260,13 @@ namespace ultralight
       app_listener_->OnClose();
   }
 
+  void WindowGLFW::OnKeyBoard(int key, int action)
+  {
+    if (listener_)
+      listener_->OnKeyBoard(key, action);
+    if (app_listener_)
+      app_listener_->OnKeyBoard(key, action);
+  }
   void WindowGLFW::OnResize(uint32_t width, uint32_t height)
   {
     if (listener_)

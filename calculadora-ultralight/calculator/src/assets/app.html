@@ -20,10 +20,11 @@
         class="min-h-screen bg-gray-50 dark:bg-black p-6 flex flex-col justify-center"
       >
         <div class="flex-grow flex flex-col">
-          <div class="h-28 w-full flex text-blue-500">
+          <div class="h-20 w-full flex text-blue-500">
             <span
+              id="currentOperationSpan"
               class="text-5xl font-black text-card dark:text-blue-500 flex-grow"
-              >=</span
+              >+</span
             >
             <div class="space-x-4">
               <span
@@ -33,7 +34,17 @@
             </div>
           </div>
           <hr />
-          <div class="flex-grow"></div>
+          <div id="log" class="h-32 w-full flex flex-col text-blue-500 items-end m-1 overflow-auto">
+            <div>1 + 1 + 1 + 1 + 1 + 1 + 1 + 1+ 1 + 1 + 1 + 1 + 1 + 1= 2</div>
+            <div>1 + 1 = 2</div>
+            <div>1 + 1 = 2</div>
+            <div>1 + 1 = 2</div>
+            <div>1 + 1 = 2</div>
+            <div>1 + 1 = 2</div>
+            <div>1 + 1 = 2</div>
+            
+          </div>
+          <hr />
           <div
             class="grid grid-cols-4 w-full gap-2 text-black dark:text-white self-end"
           >
@@ -41,7 +52,7 @@
               <button
                 x-on:click="buttonClick(item)"
                 x-text="item"
-                class="w-full transition duration-200 focus:bg-blue-600 focus:outline-none font-black h-28 text-white bg-blue-500 rounded-xl shadow flex items-center justify-center text-3xl"
+                class="w-full transition duration-200 focus:bg-blue-600 focus:outline-none font-black h-20 text-white bg-blue-500 rounded-xl shadow flex items-center justify-center text-1xl"
               ></button>
             </template>
           </div>

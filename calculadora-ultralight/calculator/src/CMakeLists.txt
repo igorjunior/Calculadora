@@ -2,7 +2,7 @@ set(APP_NAME Calculator)
 include_directories("${ULTRALIGHT_INCLUDE_DIR}")
 link_directories("${ULTRALIGHT_LIBRARY_DIR}")
 link_libraries(UltralightCore AppCore Ultralight WebCore)
-set(SOURCES main.c main.h Engine/Engine.h Engine/Engine.c)
+set(SOURCES main.c main.h Engine/Engine.h Engine/Engine.c Log/Log.h Log/Log.c)
 
 add_executable(${APP_NAME} WIN32 MACOSX_BUNDLE ${SOURCES})
 

@@ -57,6 +57,7 @@ namespace ultralight
 
     void OnClose();
     void OnResize(uint32_t width, uint32_t height);
+    void OnKeyBoard(int key, int action);
 
   protected:
     WindowGLFW(Monitor *monitor, const char *name, uint32_t width, uint32_t height,

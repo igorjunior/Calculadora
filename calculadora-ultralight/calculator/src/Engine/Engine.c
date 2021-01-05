@@ -6,7 +6,8 @@
 #include "Engine.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
+#include "../Log/Log.h"
 typedef enum
 {
   SUM,
@@ -14,6 +15,7 @@ typedef enum
   MULT,
   DIV,
   INVERT,
+  CLEAR,
   NON
 } operations;
 
@@ -125,48 +127,120 @@ JSValueRef Operation(JSContextRef ctx, JSObjectRef function,
                      JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[],
                      JSValueRef *exception)
 {
-  printf("Number Click: ");
   if (argumentCount == 2)
   {
     int operation = (int)JSValueToNumber(ctx, arguments[0], 0);
     double number = JSValueToNumber(ctx, arguments[1], 0);
-    printf("%.2lf ", operation);
-    printf("%.2lf ", number);
+    double old_result = result;
+    char out[999];
+    memset(out, 0, sizeof(out));
+    strcat(out, "addLog(");
+    char resultNumber[80];
+    sprintf(resultNumber, "%.2lf", result);
+    strcat(out, resultNumber);
+    strcat(out, ",");
+    sprintf(resultNumber, "%.2lf", number);
+    strcat(out, resultNumber);
     if (operation != NON)
     {
       if (operation == SUM)
       {
         result += number;
+        strcat(out, ",0,");
+        sprintf(resultNumber, "%.2lf", result);
+        strcat(out, resultNumber);
+        strcat(out, ")");
+        ULString script = ulCreateString(out);
+        ulViewEvaluateScript(view, script, 0);
+        ulDestroyString(script);
+        addLog(old_result, number, operation, result);
       }
       else if (operation == SUB)
       {
         result -= number;
+        strcat(out, ",1,");
+        sprintf(resultNumber, "%.2lf", result);
+        strcat(out, resultNumber);
+        strcat(out, ")");
+        ULString script = ulCreateString(out);
+        ulViewEvaluateScript(view, script, 0);
+        ulDestroyString(script);
+        addLog(old_result, number, operation, result);
       }
       else if (operation == MULT)
       {
         result *= number;
+        strcat(out, ",2,");
+        sprintf(resultNumber, "%.2lf", result);
+        strcat(out, resultNumber);
+        strcat(out, ")");
+        ULString script = ulCreateString(out);
+        ulViewEvaluateScript(view, script, 0);
+        ulDestroyString(script);
+        addLog(old_result, number, operation, result);
       }
       else if (operation == DIV)
       {
         result /= number;
+        strcat(out, ",3,");
+        sprintf(resultNumber, "%.2lf", result);
+        strcat(out, resultNumber);
+        strcat(out, ")");
+        ULString script = ulCreateString(out);
+        ulViewEvaluateScript(view, script, 0);
+        ulDestroyString(script);
+        addLog(old_result, number, operation, result);
       }
       else if (operation == INVERT)
       {
         result *= -1;
       }
+      else if (operation == CLEAR)
+      {
+        result = 0.0f;
+        ULString script = ulCreateString("clearLog()");
+        ulViewEvaluateScript(view, script, 0);
+        ulDestroyString(script);
+      }
     }
-    printf("= %.2lf \n", result);
     JSValueRef returnValue = JSValueMakeNumber(ctx, result);
     return returnValue;
   }
-
-  printf("\n");
 }
 
 void OnDOMReady(void *user_data, ULView caller, unsigned long long frame_id,
                 bool is_main_frame, ULString url)
 {
   JSContextRef ctx = ulViewLockJSContext(view);
+  ULString script = ulCreateString("clearLog()");
+  ulViewEvaluateScript(view, script, 0);
+  ulDestroyString(script);
+
+  int size, i;
+  Log *logs = readLogs(&size);
+  for (i = 0; i < size; i++)
+  {
+    char out[999];
+    memset(out, 0, sizeof(out));
+    strcat(out, "addLog(");
+    char resultNumber[80];
+    sprintf(resultNumber, "%.2lf", logs[i].n1);
+    strcat(out, resultNumber);
+    strcat(out, ",");
+    sprintf(resultNumber, "%.2lf", logs[i].n2);
+    strcat(out, resultNumber);
+    strcat(out, ",");
+    sprintf(resultNumber, "%d", logs[i].o);
+    strcat(out, resultNumber);
+    strcat(out, ",");
+    sprintf(resultNumber, "%.2lf", logs[i].r);
+    strcat(out, resultNumber);
+    strcat(out, ")");
+    printf("%s\n", out);
+    script = ulCreateString(out);
+    ulViewEvaluateScript(view, script, 0);
+    ulDestroyString(script);
+  }
   JSStringRef name = JSStringCreateWithUTF8CString("Operation");
   JSObjectRef func = JSObjectMakeFunctionWithCallback(ctx, name, Operation);
   JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), name, func, 0, 0);
