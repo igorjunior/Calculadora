@@ -1,5 +1,6 @@
 #ifndef ENGINE_H_INCLUDE
 #define ENGINE_H_INCLUDE
+
 void RunMenu(int width, int height);
 void ShutDownMenu();
 void SetDevs(const char *devs_);

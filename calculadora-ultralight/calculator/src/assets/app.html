@@ -24,7 +24,7 @@
             <span
               id="currentOperationSpan"
               class="text-5xl font-black text-card dark:text-blue-500 flex-grow"
-              >+</span
+              ></span
             >
             <div class="space-x-4">
               <span
@@ -34,14 +34,22 @@
             </div>
           </div>
           <hr />
-          <div id="log" class="h-32 w-full flex flex-col text-blue-500 items-end m-1 overflow-auto">
-            <div>1 + 1 + 1 + 1 + 1 + 1 + 1 + 1+ 1 + 1 + 1 + 1 + 1 + 1= 2</div>
-            <div>1 + 1 = 2</div>
-            <div>1 + 1 = 2</div>
-            <div>1 + 1 = 2</div>
-            <div>1 + 1 = 2</div>
-            <div>1 + 1 = 2</div>
-            <div>1 + 1 = 2</div>
+          <div class="relative m-1">
+            <button
+                id="flushLog"
+                style="height: 40px; width: 100px;"
+                class="absolute self-start focus:bg-blue-600 focus:outline-none transition duration-200 font-black h-20 text-white bg-blue-500 rounded-md shadow flex items-center justify-center text-2xl"
+              >Flush</button>
+              <div id="log" class="h-32 flex flex-col text-blue-500 items-end overflow-auto text-2xl w-full">
+                <div>1 + 1 + 1 + 1 + 1 + 1 + 1 + 1+ 1 + 1 + 1 + 1 + 1 + 1= 2</div>
+                <div>1 + 1 = 2</div>
+                <div>1 + 1 = 2</div>
+                <div>1 + 1 = 2</div>
+                <div>1 + 1 = 2</div>
+                <div>1 + 1 = 2</div>
+                <div>1 + 1 = 2</div>
+              </div>
+            
             
           </div>
           <hr />

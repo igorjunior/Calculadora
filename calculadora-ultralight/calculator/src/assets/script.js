@@ -1,7 +1,7 @@
 const items = [
   "C",
   "CE",  
-  "%",
+  "x^",
   "/",
   "1",
   "2",
@@ -26,8 +26,9 @@ var OPERATIONS = {
   MULT: 2, 
   DIV: 3,
   INVERT: 4,
-  CLEAR: 5,
-  NON: 6
+  POWER: 5,
+  CLEAR: 6,
+  NON: 7
 };
 const log = document.getElementById('log');
 const textBox = document.getElementById('textBox');
@@ -76,14 +77,19 @@ const buttonClick = (element) => {
       textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
       currentOperation = OPERATIONS.NON;
       currentResult = true;
-    }else if(element === "C"){
+    }else if(element === "x^"){
+      currentOperationSpan.innerHTML = "^";
+      textBox.innerHTML = Operation(currentOperation, parseFloat(textBox.innerHTML));
+      currentOperation = OPERATIONS.POWER;
+      currentResult = true;
+    }
+    else if(element === "C"){
       textBox.innerHTML = textBox.innerHTML.slice(0, -1);
     }else if(element === "CE"){
       textBox.innerHTML = 0;
-      currentOperationSpan.innerHTML = "+";
+      currentOperationSpan.innerHTML = "";
       currentOperation = OPERATIONS.SUM;
       Operation(OPERATIONS.CLEAR, 0);
-      clearLog();
     }
   }else{
     if(parseFloat(textBox.innerHTML) === 0 && textBox.innerHTML.slice(-1) !== "."){
@@ -211,7 +217,7 @@ document.addEventListener('keydown', function(event){
         buttonClick("/");
       break;
       case 81:
-        buttonClick("/");
+        buttonClick("/flushLog");
       break;
     default:
       break;
@@ -234,12 +240,29 @@ function addLog(number1, number2, operation, result){
       case OPERATIONS.SUB:
       symbol = "-";
       break;
+      case OPERATIONS.POWER:
+        symbol = "^";
+        break;
     default:
       break;
   }
-  log.innerHTML = `${log.innerHTML}<div>${number1} ${symbol} ${number2} = ${result}</div>`;
+  let logDiv = document.createElement("div");
+  logDiv.innerHTML = `<div>${number1} ${symbol} ${number2} = ${result}</div>`;
+  logDiv.addEventListener('click', function(e){
+    SetResult(result);
+    currentOperationSpan.innerHTML = "=";
+    textBox.innerHTML = result;
+    currentOperation = OPERATIONS.NON;
+    currentResult = true;
+  });
+  log.appendChild(logDiv);
 }
 
 function clearLog(){
   log.innerHTML = "";
 }
+
+
+document.getElementById("flushLog").addEventListener('click', function(e) {
+  FlushLog();
+});
