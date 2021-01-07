@@ -217,7 +217,9 @@ document.addEventListener('keydown', function(event){
         buttonClick("/");
       break;
       case 81:
-        buttonClick("/flushLog");
+        buttonClick("/");
+        case 222:
+        buttonClick("x^");
       break;
     default:
       break;
